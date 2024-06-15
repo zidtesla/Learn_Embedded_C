@@ -19,3 +19,11 @@ This repository is for new and aspiring embedded engineers who are eager to lear
 I welcome contributions and feedback. If you have suggestions, or improvements, or would like to share your own learning experiences, please feel free to open an issue or submit a pull request.
 
 Thank you for visiting, and I hope this repository becomes a valuable resource in your embedded C development journey
+# Lesson_0
+In this lesson we learn how computers count i.e.
+1. The data is stored in binary in memory and hence the use of Hex value to represent this binary number is preferred.
+2. A 4-bit binary number is called a nibble, 8-bit is a byte.
+3. When a 32-bit int variable reaches its maximum value and is incremented, it overflows into the negative range. This is due to the use of two's complement representation, where the negative numbers are the 
+   two's complement of their positive equivalents.
+4. The code is understood in the debug mode check how thw value changes. Also try modifying the variable with the maximum positive integer value (0x7FFFFFFF) and increment it by 1 to see the overflow and negative 
+   representation of 0x7FFFFFFF i.e. 0x80000000. Similarly check the negative range.
