@@ -21,7 +21,7 @@ I welcome contributions and feedback. If you have suggestions, or improvements, 
 Thank you for visiting, and I hope this repository becomes a valuable resource in your embedded C development journey
 # Lesson_0
 In this lesson we learn how computers count i.e.
-1. The data is stored in binary in memory and hence the use of Hex value to represent this binary number is preferred.
+1. Binary data is stored in memory, and hexadecimal values are preferred to represent these binary numbers due to their compactness and readability.
 2. A 4-bit binary number is called a nibble, 8-bit is a byte.
 3. When a 32-bit int variable reaches its maximum value and is incremented, it overflows into the negative range. This is due to the use of two's complement representation, where the negative numbers are the 
    two's complement of their positive equivalents.
