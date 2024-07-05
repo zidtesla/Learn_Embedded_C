@@ -27,3 +27,12 @@ In this lesson, we learn how computers count i.e.
    two's complement of their positive equivalents.
 4. The code is understood in the debug mode check how the value changes. Also, try modifying the variable with the maximum positive integer value (0x7FFFFFFF) and increment it by 1 to see the overflow and negative 
    representation of 0x7FFFFFFF i.e. 0x80000000. Similarly, check the negative range.
+# Lesson_1
+In this lesson, we shall learn to use loops to simplify the iterative tasks. Based on lesson_0's increment of the counter code we now use a while loop to increment the counter 21 times, instead of writing the counter++ instruction 21 times, a while loop is used to do the same. Take it easy.
+1. When implementing loops the assembly code generated contains the branching instruction which means we begin the execution of new instructions, rather than the ones that were lined up in the pipeline for execution.
+2. Pipeline: It is the system designed to execute the instructions in an ordered manner. Three processes take place Fetch, Decode, and Execute. As soon as the instruction is fetched and its decoding process begins the next instruction in your code is fetched and the decoding begins during the execution process of the first instruction that was fetched.
+3. The overhead: There are branch instructions used, that stall the pipeline for a few cycles since the normal flow is disrupted. The pipeline partially processes instructions that are discarded and then restarts execution from the new instructions since a branch instruction was executed.
+4. We can avoid this issue in time-bound situations by unrolling the loop and reducing the number of branch iterations.
+5. Also refer to the document to see the smartness of the compiler when it converts the C - code to assembly language to improve efficiency when using loops.
+# Lesson_2
+
