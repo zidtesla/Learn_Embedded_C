@@ -4,6 +4,10 @@ Welcome to my GitHub repository, where I document my journey in learning Embedde
 # About This Repository
 This repository serves as a comprehensive guide for anyone interested in Embedded C development. I will be tracking my progress and sharing insights as I develop device drivers using the STM IDE and an STM32 Nucleo board. My goal is to make the learning process accessible and transparent, allowing aspiring embedded engineers to benefit from the knowledge I have gained and the challenges I have overcome.
 
+# My Setup
+Development Board: STM32 Nucleo F302R8
+IDE: STM32 Cube IDE (Version 1.13.2)
+
 # Why This Repository?
 When I started my journey to become an embedded software developer, I found it difficult to decode and understand embedded C code. It often seemed like a magical language, full of complexities and nuances. Through this repository, I aim to demystify Embedded C and provide a clear, step-by-step learning path that helps others gain the skills and confidence needed to read, understand, and write embedded software.
 
