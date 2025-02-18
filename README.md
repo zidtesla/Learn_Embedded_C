@@ -39,4 +39,13 @@ In this lesson, we shall learn to use loops to simplify the iterative tasks. Bas
 4. We can avoid this issue in time-bound situations by unrolling the loop and reducing the number of branch iterations.
 5. Also refer to the document to see the smartness of the compiler when it converts the C - code to assembly language to improve efficiency when using loops.
 # Lesson_2
+Compilation Process
+Before deploying your code to an MCU, it undergoes a compilation process. The compiler organizes your code into sections based on its purpose:
+
+Flash Memory (Non-Volatile): .text (code), .const (constants).
+RAM (Volatile): .bss (uninitialized global/static variables), .data (initialized global/static variables), .heap, .stack.
+The linker script, which defines the MCU’s memory layout, allocates these sections. The flash programmer then writes the executable to flash memory. Upon boot, startup code initializes RAM, including global/static variables and the stack pointer.
+
+Pointers in Embedded Systems
+Pointers allow direct access to memory, making them essential for interacting with hardware registers and memory-mapped peripherals. They enable flexible code but require careful use to avoid unintended behavior. The compiler ensures proper type handling, often requiring explicit typecasting when assigning addresses to pointers.
 
