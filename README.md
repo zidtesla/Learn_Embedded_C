@@ -45,7 +45,13 @@ Before deploying your code to an MCU, it undergoes a compilation process. The co
 Flash Memory (Non-Volatile): .text (code), .const (constants).
 RAM (Volatile): .bss (uninitialized global/static variables), .data (initialized global/static variables), .heap, .stack.
 The linker script, which defines the MCU’s memory layout, allocates these sections. The flash programmer then writes the executable to flash memory. Upon boot, startup code initializes RAM, including global/static variables and the stack pointer.
+# Lesson_3
+In this lesson, I have taken a deep dive into register-level programming. Instead of relying on high-level libraries, I used pointers to directly access and configure microcontroller registers, successfully blinking the user LED on my development board. 
 
+This exercise gave me a much deeper understanding of:
+- How microcontroller registers work
+- The significance of memory-mapped I/O
+- Using pointers to manipulate hardware directly
 Pointers in Embedded Systems
 Pointers allow direct access to memory, making them essential for interacting with hardware registers and memory-mapped peripherals. They enable flexible code but require careful use to avoid unintended behavior. The compiler ensures proper type handling, often requiring explicit typecasting when assigning addresses to pointers.
 
