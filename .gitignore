@@ -1,0 +1,34 @@
+# Ignore IDE-specific files
+*.cproject
+*.project
+.settings/
+*.launch
+
+# Ignore CubeIDE build files
+Debug/
+Release/
+*.o
+*.elf
+*.bin
+*.map
+*.dep
+*.lst
+*.axf
+*.srec
+
+# Ignore auto-generated linker scripts
+*.ld
+
+# Ignore compiled object files
+*.d
+*.out
+
+# Ignore system and temporary files
+*.swp
+*.bak
+*.tmp
+*.log
+
+# Ignore the startup files
+startup/
+*.s
