@@ -3,6 +3,7 @@
 *.project
 .settings/
 *.launch
+*.gitignore
 
 # Ignore CubeIDE build files
 Debug/
