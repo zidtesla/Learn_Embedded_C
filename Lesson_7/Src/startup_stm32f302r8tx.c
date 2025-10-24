@@ -7,17 +7,16 @@
 #include <stdint.h>
 #include <assert.h>
 #include <system_stm32f3xx.h>
-#include "stm32f302x8.h"
-#include "core_cm4.h"
+#include <bsp.h>
 
 extern int main(void);
 extern void __libc_init_array(void);
-extern
+
 // Forward declarations of handlers
 void Reset_Handler(void);
 void Default_Handler(void);
-void NMI_Handler(void)          __attribute__((weak, alias("Default_Handler")));
-void HardFault_Handler(void)    __attribute__((weak, alias("Default_Handler")));
+void NMI_Handler(void);
+void HardFault_Handler(void);
 void SVC_Handler(void)          __attribute__((weak, alias("Default_Handler")));
 void PendSV_Handler(void)       __attribute__((weak, alias("Default_Handler")));
 void SysTick_Handler(void)      __attribute__((weak, alias("Default_Handler")));
@@ -234,8 +233,35 @@ void Reset_Handler(void)
     while (1);
 }
 
+__attribute__((naked))void NMI_Handler(void)
+{
+    __asm volatile
+    (
+
+        "b assert_failed                                      \n"
+    );
+}
+
+/*void NMI_Handler(void)
+{
+	assert_failed("NMI_Handler", __LINE__);
+}*/
+
+__attribute__((naked))void HardFault_Handler(void)
+{
+    __asm volatile
+    (
+
+        "b assert_failed                                      \n"
+    );
+}
+
+/*void HardFault_Handler(void)
+{
+	assert_failed("HardFault_Handler", __LINE__);
+}*/
+
 void Default_Handler()
 {
-	assert(0 && "Unexpected interrupt");
-	NVIC_SystemReset();
+	assert_failed("Unused_Handler", __LINE__);
 }

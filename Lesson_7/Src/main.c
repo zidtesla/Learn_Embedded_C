@@ -19,9 +19,10 @@
 #define GPIO_B_PUPDR      (*((unsigned int volatile *)(GPIO_B_START_ADDR + GPIO_B_PUPDR_OFST)))
 #define GPIO_B_BSRR       (*((unsigned int volatile *)(GPIO_B_START_ADDR + GPIO_B_BSRR_OFST)))
 
+void delay(unsigned int DelayLimit);
+
 int main(void)
 {
-	unsigned int volatile i;
 	/*enabling the peripheral clock to the AHB bus TO BLINK the LED*/
 	RCC_AHBENR |= (1<<18);
 	/*Set the mode of pin PB13 (User LED LD2) to output*/
@@ -32,19 +33,23 @@ int main(void)
 		/*Set PB13*/
 		GPIO_B_BSRR = (1<<13);
 		/*delay*/
-		for(i=0;i<1000000;i++)
-		{
-			/*wait*/
-		}
+		delay(1000000);
 		/*Toggle PB13 */
 		GPIO_B_BSRR = (1<<29);
 		/*delay*/
-		for(i=0;i<1000000;i++)
-		{
-			/*wait*/
-		}
+		delay(1000000);
 
 	}
 
     return 0 ;
+}
+
+void delay(unsigned int DelayLimit)
+{
+	unsigned int volatile i;
+
+	for(i = 0; i < DelayLimit ; i++)
+	{
+		/*wait*/
+	}
 }
