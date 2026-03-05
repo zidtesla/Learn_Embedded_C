@@ -1,5 +1,7 @@
 /* This module contains board specific related functions and initializations */
 #include "bsp.h"
+#include "OS.h"
+
 /* This function resets the MCU whenever there is a fault in the system */
 void assert_failed(const char *File, int line)
 {
@@ -9,8 +11,10 @@ void assert_failed(const char *File, int line)
 
 void SysTick_Handler(void)
 {
-	/*Set PB13*/
-	GPIO_B_ODR ^= (1<<13);
+
+	__disable_irq();
+	OS_vSched();
+	__enable_irq();
 }
 
 void bsp_init(void)

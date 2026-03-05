@@ -10,10 +10,11 @@
 #include "bsp.h"
 #include "USART.h"
 
-OS_THREAD_T USART_CommThread;
 uint32_t USART_CommStack[40];
-OS_THREAD_T LED_BlinkThread;
+OS_THREAD_T USART_CommThread;
 uint32_t LED_BlinkStack[40];
+OS_THREAD_T LED_BlinkThread;
+
 
 void delay(unsigned int DelayLimit);
 
@@ -57,6 +58,7 @@ void LEDBlinkTask2(void)
 
 int main(void)
 {
+	OS_vInit();
 	USART_vInit();
 	bsp_init();
 

@@ -9,6 +9,7 @@
 #define OS_H_
 
 #include <stdint.h>
+#include "stm32f302x8.h"
 
 typedef struct
 {
@@ -16,6 +17,10 @@ typedef struct
 }OS_THREAD_T;
 
 typedef  void (*OS_THREAD_HANDLER_T)();
+
+void OS_vInit();
+
+void OS_vSched();
 
 void OS_vThreadStart(OS_THREAD_T *me, OS_THREAD_HANDLER_T ThreadHandler,\
 		void *PrivStackMmry, uint32_t u32stackSize);
