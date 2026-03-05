@@ -97,6 +97,7 @@ __attribute__((naked)) void PendSV_Handler(void)
 			"PendSV_Restore:        \n"
 			"ldr r3, =OS_next       \n"
 			"ldr r3, [r3]           \n"
+			"ldr r3, [r3]           \n"
 			"mov sp, r3             \n"
 
 			"ldr r3, =OS_next       \n"
