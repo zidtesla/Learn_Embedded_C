@@ -11,9 +11,14 @@
 #include <stdint.h>
 #include "stm32f302x8.h"
 
+#define MAX_THREADS_D (33u)
+
 typedef struct
 {
+	/* Thread stack pointer */
 	void *pvThreadSP;
+	/* Timeout delay down-counter */
+	uint32_t timeout;
 }OS_THREAD_T;
 
 typedef  void (*OS_THREAD_HANDLER_T)();
@@ -27,6 +32,10 @@ void OS_IdleTask(void);
 void OS_vRun();
 
 void OS_vOnStartup(void);
+
+void OS_Delay(uint32_t u32ticks);
+
+void OS_vTick(void);
 
 /* Since stack-size that will be used by the idle task is unknown
  * it is best to define the size in the application

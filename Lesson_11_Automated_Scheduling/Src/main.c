@@ -30,6 +30,7 @@ void USARTCommTask1(void)
 	while(1)
 	{
          printf("Hello World \n\r");
+         OS_Delay(SYSTICK_TICKS / 3u);
 		/*delay*/
 		/* delay(1000000); This is a brain dead :|'polling function */
 		/* What is polling polling is the process of constantly checking
@@ -49,11 +50,11 @@ void LEDBlinkTask2(void)
 		/*Set PB13*/
 		GPIO_B_BSRR = (1<<13);
 		/*delay*/
-		delay(1000000);
+		OS_Delay(SYSTICK_TICKS / 2u);
 		/*Toggle PB13 */
 		GPIO_B_BSRR = (1<<29);
 		/*delay*/
-		delay(1000000);
+		OS_Delay(SYSTICK_TICKS / 3u);
 	}
 }
 

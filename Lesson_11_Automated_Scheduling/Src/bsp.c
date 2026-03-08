@@ -11,7 +11,7 @@ void assert_failed(const char *File, int line)
 
 void SysTick_Handler(void)
 {
-
+	OS_vTick();
 	__disable_irq();
 	OS_vSched();
 	__enable_irq();
