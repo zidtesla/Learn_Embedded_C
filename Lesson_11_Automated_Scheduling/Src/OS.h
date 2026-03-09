@@ -21,7 +21,7 @@ typedef struct
 	uint32_t timeout;
 }OS_THREAD_T;
 
-typedef  void (*OS_THREAD_HANDLER_T)();
+typedef  void (*OS_THREAD_HANDLER_T)(void);
 
 /* Incase all the threads are in the blocked state the Idle thread is
  * supposed to run. The Idle thread will never enter the blocked state
@@ -36,6 +36,8 @@ void OS_vOnStartup(void);
 void OS_Delay(uint32_t u32ticks);
 
 void OS_vTick(void);
+
+void OS_vOnIdle(void);
 
 /* Since stack-size that will be used by the idle task is unknown
  * it is best to define the size in the application

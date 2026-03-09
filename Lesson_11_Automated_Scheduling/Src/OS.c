@@ -54,6 +54,7 @@ void OS_vInit(void *PrivStackMmry, uint32_t u32stackSize)
 			,&OS_IdleTask
 			,PrivStackMmry
 			,sizeof(PrivStackMmry));
+			,u32stackSize);
 }
 
 void OS_vSched(void)
@@ -82,10 +83,10 @@ void OS_vSched(void)
 	}
 	OS_next = OS_ThreadArray[OS_u8CurrIndex];
 
-	if(OS_curr != OS_next)
+	if(OS_next != OS_curr)
 	{
 		/*Trigger the PENDSV interrupt*/
-		*(uint32_t volatile *)0xE000ED04 |= (1 << 28);
+		*(uint32_t volatile *)0xE000ED04 = (1 << 28);
 	}
 }
 
@@ -96,7 +97,7 @@ void OS_vThreadStart(OS_THREAD_T *me, OS_THREAD_HANDLER_T ThreadHandler,\
 	uint32_t *pu32StackLimit;
 	/* in ARM the stack grows from HIGH to LOW
 	 * memory addresses*/
-	/*The size/8 * 8 is for the 8byte alignment*/
+	/*Round DOWN to highest 8-byte aligned address within allocated bounds*/
 	sp = (uint32_t *)((((uint32_t)PrivStackMmry + u32stackSize)/8)*8);
 
 	*(--sp) = (1 << 24); /*PSR*/
@@ -183,7 +184,7 @@ void OS_Delay(uint32_t u32ticks)
 void OS_vTick(void)
 {
 	uint8_t u8ThreadIndex;
-	for(u8ThreadIndex = 1u; u8ThreadIndex < OS_u8ThreadNum; u8ThreadIndex++)
+	for(u8ThreadIndex = 1u; u8ThreadIndex < OS_u8ThreadNum; ++u8ThreadIndex)
 	{
 		if(OS_ThreadArray[u8ThreadIndex]->timeout != 0u)
 		{
@@ -198,6 +199,15 @@ void OS_vTick(void)
 		}
 	}
 }
+
+void OS_IdleTask(void)
+{
+    while(1)
+    {
+       OS_vOnIdle();
+    }
+}
+
 
 __attribute__((naked)) void PendSV_Handler(void)
 {
@@ -224,6 +234,7 @@ __attribute__((naked)) void PendSV_Handler(void)
 
 			"push {r4-r11}          \n"
 			"ldr r3, =OS_curr       \n"
+			"ldr r3, [r3]           \n"
 			"str sp, [r3]           \n"
 
 			"PendSV_Restore:        \n"

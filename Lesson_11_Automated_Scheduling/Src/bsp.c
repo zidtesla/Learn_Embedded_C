@@ -38,7 +38,7 @@ void OS_vOnStartup(void)
 	__enable_irq();
 }
 
-void OS_IdleTask(void)
+void OS_vOnIdle(void)
 {
 
 }

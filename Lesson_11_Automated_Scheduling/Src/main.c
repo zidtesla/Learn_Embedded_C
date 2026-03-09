@@ -11,7 +11,7 @@
 #include "USART.h"
 
 uint32_t IdleStack[40];
-uint32_t USART_CommStack[40];
+uint32_t USART_CommStack[256];    // Increased from 40 to 256 for printf
 OS_THREAD_T USART_CommThread;
 uint32_t LED_BlinkStack[40];
 OS_THREAD_T LED_BlinkThread;
