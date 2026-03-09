@@ -53,7 +53,6 @@ void OS_vInit(void *PrivStackMmry, uint32_t u32stackSize)
 	OS_vThreadStart(&OS_IdleThread
 			,&OS_IdleTask
 			,PrivStackMmry
-			,sizeof(PrivStackMmry));
 			,u32stackSize);
 }
 

@@ -29,16 +29,8 @@ void USARTCommTask1(void)
 {
 	while(1)
 	{
-         printf("Hello World \n\r");
-         OS_Delay(SYSTICK_TICKS / 3u);
-		/*delay*/
-		/* delay(1000000); This is a brain dead :|'polling function */
-		/* What is polling polling is the process of constantly checking
-		 * for a condition to be met so till then nothing else is done
-		 * except wait for the condition to be met which is quiet expensive
-		 * if you want to achieve multiple things simultaneously.
-		 */
-
+        printf("Hello World \n\r");
+        OS_Delay(20);  /* ~200 ms */
 	}
 }
 
@@ -49,12 +41,12 @@ void LEDBlinkTask2(void)
 	{
 		/*Set PB13*/
 		GPIO_B_BSRR = (1<<13);
-		/*delay*/
-		OS_Delay(SYSTICK_TICKS / 2u);
+		/*delay 500ms*/
+		OS_Delay(50);
 		/*Toggle PB13 */
 		GPIO_B_BSRR = (1<<29);
-		/*delay*/
-		OS_Delay(SYSTICK_TICKS / 3u);
+		/*delay 330ms*/
+		OS_Delay(33);
 	}
 }
 
