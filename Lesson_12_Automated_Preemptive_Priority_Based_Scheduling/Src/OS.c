@@ -10,22 +10,24 @@
 OS_THREAD_T * volatile OS_curr;
 OS_THREAD_T * volatile OS_next;
 
+#define LOG2(X)    (32 -  __CLZ(X))
+
 /* The array holds the list of threads to run
  * assuming the RTOS allows 32 threads and the +1 is the
  * idle thread
  */
 OS_THREAD_T *OS_ThreadArray[32 + 1];
 
+
 /* Bitmask of threads that are
  * ready to run
  */
 uint32_t OS_u32ReadySet;
 
-/* Current index of the thread */
-uint8_t OS_u8CurrIndex;
-
-/* Number of threads started so far */
-uint8_t OS_u8ThreadNum;
+/* Bitmask of threads that are
+ * in the delayed state
+ */
+uint32_t OS_u32DelayedSet;
 
 OS_THREAD_T OS_IdleThread;
 
@@ -51,6 +53,7 @@ void OS_vInit(void *PrivStackMmry, uint32_t u32stackSize)
 
 	/*Start the idle thread*/
 	OS_vThreadStart(&OS_IdleThread
+			,0u
 			,&OS_IdleTask
 			,PrivStackMmry
 			,u32stackSize);
@@ -61,26 +64,16 @@ void OS_vSched(void)
 	/* Check if the idle thread needs to run */
 	if(OS_u32ReadySet == 0u)
 	{
-		OS_u8CurrIndex = 0u;
+		OS_next = OS_ThreadArray[0];
 	}
 	/* Schedule the threads in the ready state */
 	else
 	{
-		/* Keep checking for the thread in ready set list
-		 * if its ready or not.
+		OS_next = OS_ThreadArray[LOG2(OS_u32ReadySet)];
+		/*LOG2 produces numbers from zero to 32 please insert a check or assert
+		 * to check that os_next is not equal to zero
 		 */
-		do
-		{
-			++OS_u8CurrIndex;
-			if(OS_u8CurrIndex == OS_u8ThreadNum)
-			{
-				OS_u8CurrIndex = 1u;
-			}
-
-		}while((OS_u32ReadySet & (1u << (OS_u8CurrIndex - 1u))) == 0u);
-
 	}
-	OS_next = OS_ThreadArray[OS_u8CurrIndex];
 
 	if(OS_next != OS_curr)
 	{
@@ -163,8 +156,10 @@ void OS_vThreadStart(OS_THREAD_T *me, uint8_t u8ThreadPrio ,OS_THREAD_HANDLER_T 
 /* Puts the Thread in the blocked state */
 void OS_Delay(uint32_t u32ticks)
 {
+	uint32_t u32Bit = 0u;
 	__disable_irq();
 
+	u32Bit = (1u << (OS_curr->prio - 1u));
 	/* NOTE: To increase the safety and safeguard the delay function
 	 * from being called by the IDLE thread add an ASSERTION
 	 * that the current thread is not in the idle thread
@@ -173,9 +168,9 @@ void OS_Delay(uint32_t u32ticks)
 	 * the include path */
 	OS_curr->timeout = u32ticks;
 
-	/* Indicate the task as blocked */
-	OS_u32ReadySet &= ~(1u << (OS_u8CurrIndex - 1u));
-
+	/* Indicate the task as blocked by updating the ready and delayed set */
+	OS_u32ReadySet &= ~u32Bit;
+    OS_u32DelayedSet |= u32Bit;
     /* Call the scheduler to switch context to another
      * thread in the array that is in the ready state. The context switch
      * will happen only after the interrupts are enabled.
@@ -185,25 +180,38 @@ void OS_Delay(uint32_t u32ticks)
 }
 
 /* Removes the Thread out of the blocked state
- * Description: Iterate through the thread array at every systick interrupt
+ * Description: Iterates through the thread array at every systick interrupt
  * and check the timeout corresponding to the respective thread if it is not
  * zero decrement the timeout, else set the corresponding thread to the running state*/
 void OS_vTick(void)
 {
-	uint8_t u8ThreadIndex;
-	for(u8ThreadIndex = 1u; u8ThreadIndex < OS_u8ThreadNum; ++u8ThreadIndex)
+	uint32_t u32WorkingSet = OS_u32DelayedSet;
+	uint32_t u32bit = 0U;
+	OS_THREAD_T *sTemp = (OS_THREAD_T *)0;
+
+	while(u32WorkingSet != 0u)
 	{
-		if(OS_ThreadArray[u8ThreadIndex]->timeout != 0u)
+		sTemp = OS_ThreadArray[LOG2(u32WorkingSet)];
+
+		u32bit = (1u << (sTemp->prio -  1u));
+
+        /* Continue executing if sTemp points to something, else halt
+         * Use ASSERT here once created*/
+
+		/* Decrement the timeout for the corresponding thread */
+		--(sTemp->timeout);
+
+		/* Check in advance that the timeout value for this thread is zero and
+		 * remove it from the delayed set and update the readyset bit-mask
+		 */
+		if(sTemp->timeout == 0u)
 		{
-			--OS_ThreadArray[u8ThreadIndex]->timeout;
-			/* Check before-hand if the timeout is zero and
-			 * set the readyset bit mask to ready state
-			 */
-			if(OS_ThreadArray[u8ThreadIndex]->timeout == 0u)
-			{
-				OS_u32ReadySet |= (1u << (u8ThreadIndex - 1u));
-			}
+			OS_u32ReadySet |= u32bit;
+			OS_u32DelayedSet &= ~u32bit;
 		}
+
+		/* Update the working set */
+		u32WorkingSet &= ~u32bit;
 	}
 }
 

@@ -57,11 +57,13 @@ int main(void)
 	bsp_init();
 
 	OS_vThreadStart(&USART_CommThread
+			,2u
 			,&USARTCommTask1
 			,USART_CommStack
 			,sizeof(USART_CommStack));
 
 	OS_vThreadStart(&LED_BlinkThread
+			,5u
 			,&LEDBlinkTask2
 			,LED_BlinkStack
 			,sizeof(LED_BlinkStack));
